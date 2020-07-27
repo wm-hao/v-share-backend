@@ -1,17 +1,24 @@
 package zhh.share.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import zhh.share.constant.CommonConstant;
 import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
 import zhh.share.entity.TradeRecord;
 import zhh.share.service.TradeRecordService;
 import zhh.share.util.CommonUtil;
+import zhh.share.util.ExcelUtil;
+import zhh.share.util.TimeUtil;
 
+import java.io.File;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -20,6 +27,7 @@ import java.util.List;
  */
 @RequestMapping("/trade")
 @RestController
+@CrossOrigin
 public class TradeController {
 
     private static transient Log log = LogFactory.getLog(TradeController.class);
@@ -27,19 +35,22 @@ public class TradeController {
     @Autowired
     TradeRecordService tradeRecordService;
 
+    @Value("${upload.dir}")
+    private String dir;
+
     @GetMapping("/list/page")
     public List<TradeRecord> findByPage(@RequestParam int page, @RequestParam int size) {
         Page<TradeRecord> tradeRecords = tradeRecordService.findByPage(page, size);
         return tradeRecords.getContent();
     }
 
-    @PostMapping("/list")
+    @RequestMapping(value = "/pagination", method = {RequestMethod.POST, RequestMethod.OPTIONS})
     public BaseResponse findByPageAllProps(@RequestBody BaseRequest baseRequest) {
         CommonUtil.convertPagination(baseRequest);
         log.error(baseRequest);
         try {
-            Page<TradeRecord> tradeRecords = tradeRecordService.findByAllProps(baseRequest.getPage(), baseRequest.getSize(), baseRequest.getShareName(),
-                    baseRequest.getShareCode(), baseRequest.getPayType(), baseRequest.getStartTime(), baseRequest.getEndTime());
+            Page<TradeRecord> tradeRecords = tradeRecordService.findByAllProps(baseRequest.getUserId(), baseRequest.getPage(), baseRequest.getSize(), baseRequest.getShareName(),
+                    baseRequest.getShareCode(), baseRequest.getPayType(), baseRequest.getStartTime(), baseRequest.getEndTime(), StringUtils.equals(CommonConstant.Order.ASC, baseRequest.getTimeOrder()));
             BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
             response.setTotal(tradeRecords.getTotalElements());
             response.setRows(tradeRecords.getContent());
@@ -50,4 +61,48 @@ public class TradeController {
         }
     }
 
+    @PostMapping("import")
+    @ResponseBody
+    public BaseResponse importByXls(@RequestParam("file") MultipartFile file, @RequestParam("userId") long userId) {
+        log.error("文件上传出入开始:");
+        if (file.isEmpty()) {
+            return CommonUtil.fail("上传文件为空");
+        }
+        String fileName = file.getOriginalFilename();
+        String filePath = dir + File.separator;
+        File dest = new File(filePath + fileName);
+        try {
+            file.transferTo(dest);
+            List<TradeRecord> tradeRecords = ExcelUtil.parseExcel2TradeRecord(dest.getAbsolutePath());
+            for (TradeRecord tradeRecord : tradeRecords) {
+                tradeRecord.setUserId(userId);
+            }
+            tradeRecordService.saveAll(tradeRecords);
+            log.info("上传成功");
+        } catch (Exception e) {
+            log.error("通过表格插入交易记录失败:");
+            log.error(e.getMessage(), e);
+            return CommonUtil.fail(e.getMessage());
+        }
+        return CommonUtil.success(CommonConstant.Message.IMPORT_TRADE_RECORD);
+    }
+
+    @PostMapping("/add")
+    public BaseResponse addNewTradeRecord(@RequestBody TradeRecord tradeRecord) {
+        if (tradeRecord != null) {
+            try {
+                tradeRecord.setCreateTime(TimeUtil.getCurrentTimestamp());
+                tradeRecord.setUpdateTime(TimeUtil.getCurrentTimestamp());
+                tradeRecord.setState(CommonConstant.State.STATE_VALID);
+                tradeRecordService.save(tradeRecord);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return CommonUtil.fail(e.getMessage());
+            }
+
+        } else {
+            return CommonUtil.fail(CommonConstant.Message.INFO_EMPTY);
+        }
+        return CommonUtil.success(CommonConstant.Message.ADD_NEW_RECORD);
+    }
 }

@@ -16,6 +16,9 @@ public class BaseRequest {
     private String shareName;
     private String shareCode;
     private String payType;
+    private String timeOrder;
+    private long userId;
+    private String reverse;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp startTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

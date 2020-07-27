@@ -17,6 +17,7 @@ import java.util.Date;
 @DynamicInsert(true)
 @DynamicUpdate(true)
 @Data
+@Table(indexes = {@Index(columnList = "shareName")})
 public class TradeRecord implements Serializable {
     @Id
     @GeneratedValue
@@ -29,11 +30,16 @@ public class TradeRecord implements Serializable {
     @Column(columnDefinition = "varchar(50) comment '股票代码'", nullable = false)
     private String shareCode;
 
+
+    @Column(columnDefinition = "varchar(50) comment '拼音简称'")
+    private String alias;
+
+
     @Column(columnDefinition = "double comment '交易价格'", nullable = false)
     private Double unitPrice;
 
-    @Column(columnDefinition = "int comment '交易数量'", nullable = false)
-    private Integer payCount;
+    @Column(columnDefinition = "double comment '交易数量'", nullable = false)
+    private Double payCount;
 
     @Column(columnDefinition = "double comment '交易金额'", nullable = false)
     private Double payAmount;
@@ -59,7 +65,14 @@ public class TradeRecord implements Serializable {
     @Column(columnDefinition = "datetime comment '更新时间'")
     private Date updateTime;
 
+    @Column(columnDefinition = "int(1) comment '状态'")
+    private Integer state;
 
+    @Column(columnDefinition = "varchar(200) comment '交易流水'")
+    private String tradeSeq;
+
+    @Column(columnDefinition = "bigint comment '用户编号'")
+    private Long userId;
 
     @Transient
     public static final String SHARE_NAME = "shareName";
@@ -78,10 +91,20 @@ public class TradeRecord implements Serializable {
     @Transient
     public static final String FEE = "fee";
     @Transient
+    public static final String ID = "id";
+    @Transient
     public static final String CREATE_TIME = "createTime";
     @Transient
     public static final String UPDATE_TIME = "updateTime";
     @Transient
+    public static final String STATE = "state";
+    @Transient
     public static final String PAY_TIME = "payTime";
+    @Transient
+    public static final String ALIAS = "alias";
+    @Transient
+    public static final String TRADE_SEQ = "tradeSeq";
+    @Transient
+    public static final String USER_ID = "userId";
 
 }

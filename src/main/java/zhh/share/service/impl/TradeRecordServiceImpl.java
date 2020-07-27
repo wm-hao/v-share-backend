@@ -7,9 +7,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import zhh.share.dao.TradeRecordRepository;
 import zhh.share.entity.TradeRecord;
+import zhh.share.pojo.TradeRecordCount;
 import zhh.share.service.TradeRecordService;
 
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.List;
@@ -55,9 +55,12 @@ public class TradeRecordServiceImpl implements TradeRecordService {
     }
 
     @Override
-    public Page<TradeRecord> findByAllProps(int page, int size, String name, String code, String payType, Date startTime, Date endTime) {
+    public Page<TradeRecord> findByAllProps(long userId, int page, int size, String name, String code, String payType, Date startTime, Date endTime, boolean orderByPayTimeAsc) {
         return tradeRecordRepository.findAll((Specification<TradeRecord>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
+            if (userId > 0) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get(TradeRecord.USER_ID), userId));
+            }
             if (StringUtils.isNotBlank(name)) {
                 predicate.getExpressions().add(criteriaBuilder.like(root.get(TradeRecord.SHARE_NAME), "%" + name + "%"));
             }
@@ -74,12 +77,22 @@ public class TradeRecordServiceImpl implements TradeRecordService {
                 predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get(TradeRecord.PAY_TIME), endTime));
             }
             return predicate;
-        }, PageRequest.of(page, size, Sort.Direction.DESC, TradeRecord.PAY_TIME));
+        }, PageRequest.of(page, size, orderByPayTimeAsc ? Sort.Direction.ASC : Sort.Direction.DESC, TradeRecord.PAY_TIME));
     }
 
     @Override
     public int saveAll(List<TradeRecord> tradeRecords) {
         return tradeRecordRepository.saveAll(tradeRecords).size();
+    }
+
+    @Override
+    public long countByShareName(String shareName) {
+        return tradeRecordRepository.countByShareName(shareName);
+    }
+
+    @Override
+    public List<TradeRecordCount> groupByShareName() {
+        return tradeRecordRepository.groupByShareName();
     }
 
 }

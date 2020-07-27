@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import zhh.share.entity.TradeRecord;
+import zhh.share.pojo.TradeRecordCount;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,11 @@ public interface TradeRecordService {
 
     Page<TradeRecord> findByPage(int page, int size);
 
-    Page<TradeRecord> findByAllProps(int page, int size, String name, String code, String payType, Date startTime, Date endTime);
+    Page<TradeRecord> findByAllProps(long userId, int page, int size, String name, String code, String payType, Date startTime, Date endTime, boolean orderByPayTimeAsc);
 
     int saveAll(List<TradeRecord> tradeRecords);
+
+    long countByShareName(String shareName);
+
+    List<TradeRecordCount> groupByShareName();
 }
