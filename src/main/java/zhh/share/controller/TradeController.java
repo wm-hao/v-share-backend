@@ -75,6 +75,7 @@ public class TradeController {
             file.transferTo(dest);
             List<TradeRecord> tradeRecords = ExcelUtil.parseExcel2TradeRecord(dest.getAbsolutePath());
             for (TradeRecord tradeRecord : tradeRecords) {
+                log.error(tradeRecord);
                 tradeRecord.setUserId(userId);
             }
             tradeRecordService.saveAll(tradeRecords);

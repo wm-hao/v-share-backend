@@ -9,7 +9,8 @@ public class ShareConstant {
     public enum PayType {
         BUY("BUY", "买入"),
         SELL("SELL", "卖出"),
-        BONUS("BOUNS", "分红");
+        BONUS("BOUNS", "股息入账"),
+        TAX("TAX", "股息红利税补缴");
 
         private String type;
         private String desc;

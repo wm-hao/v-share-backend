@@ -226,6 +226,8 @@ public class ExcelUtil {
             resultData.setPayType(ShareConstant.PayType.SELL.getType());
         } else if (optType.contains(ShareConstant.PayType.BONUS.getDesc())) {
             resultData.setPayType(ShareConstant.PayType.BONUS.getType());
+        } else if (optType.contains(ShareConstant.PayType.TAX.getDesc())) {
+            resultData.setPayType(ShareConstant.PayType.TAX.getType());
         }
         resultData.setPayTime(tradeTime);
         resultData.setCreateTime(TimeUtil.getCurrentTimestamp());
