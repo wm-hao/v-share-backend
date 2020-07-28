@@ -19,18 +19,25 @@ public class BaseEntity {
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '创建时间'")
+    @Column(columnDefinition = "datetime comment '创建时间' default CURRENT_TIMESTAMP()")
     private Date createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '更新时间'")
+    @Column(columnDefinition = "datetime comment '更新时间' default CURRENT_TIMESTAMP()")
     private Date updateTime;
 
-    @Column(columnDefinition = "int(1) comment '状态'")
+    @Column(columnDefinition = "int(1) comment '状态' default 1")
     private Integer state;
 
     @Column(columnDefinition = "varchar(400) comment '备注'")
     private String remarks;
+
+    @Column(columnDefinition = "varchar(10) comment '日期'")
+    private String date;
+
+
+    @Column(columnDefinition = "bigint comment '用户编号'")
+    private Long userId;
 
     @Transient
     public static final String ID = "id";
@@ -42,4 +49,8 @@ public class BaseEntity {
     public static final String STATE = "state";
     @Transient
     public static final String REMARKS = "remarks";
+    @Transient
+    public static final String DATE = "date";
+    @Transient
+    public static final String USER_ID = "userId";
 }

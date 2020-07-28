@@ -2,6 +2,8 @@ package zhh.share.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,12 +15,14 @@ import java.util.Date;
  * @author richer
  * @date 2020/7/21 9:45 上午
  */
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
 @Data
+@ToString(callSuper = true)
 @Table(indexes = {@Index(columnList = "shareName")})
-public class TradeRecord implements Serializable {
+public class TradeRecord extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "bigint(20) comment '主键'", nullable = false)
@@ -57,22 +61,8 @@ public class TradeRecord implements Serializable {
     @Column(columnDefinition = "datetime comment '交易时间'")
     private Date payTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '创建时间'")
-    private Date createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '更新时间'")
-    private Date updateTime;
-
-    @Column(columnDefinition = "int(1) comment '状态'")
-    private Integer state;
-
     @Column(columnDefinition = "varchar(200) comment '交易流水'")
     private String tradeSeq;
-
-    @Column(columnDefinition = "bigint comment '用户编号'")
-    private Long userId;
 
     @Transient
     public static final String SHARE_NAME = "shareName";

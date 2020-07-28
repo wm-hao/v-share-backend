@@ -2,9 +2,9 @@ package zhh.share.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author richer
@@ -16,7 +16,8 @@ public class TimeUtil {
         YYYYMMDDHIMMSS("yyyyMMddHHmmss"),
         YYYYMMDDHI_MM_SS("yyyyMMddHH:mm:ss"),
         YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
-        YYYYMMDD("yyyyMMdd");
+        YYYYMMDD("yyyyMMdd"),
+        YYYY_MM_DD("yyyy-MM-dd");
 
         private TimeFormat(String format) {
             this.format = format;
@@ -53,6 +54,6 @@ public class TimeUtil {
     }
 
     public static String getCurrentDay() throws Exception {
-        return getStringFromTimestamp(new Date(System.currentTimeMillis()), TimeFormat.YYYYMMDD);
+        return getStringFromTimestamp(new Date(System.currentTimeMillis()), TimeFormat.YYYY_MM_DD);
     }
 }

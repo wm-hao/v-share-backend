@@ -26,11 +26,15 @@ public interface TradeRecordService {
 
     Page<TradeRecord> findByPage(int page, int size);
 
-    Page<TradeRecord> findByAllProps(long userId, int page, int size, String name, String code, String payType, Date startTime, Date endTime, boolean orderByPayTimeAsc);
+    Page<TradeRecord> findByAllProps(long userId, int page, int size, String name, String code, String alias, String payType, Date startTime, Date endTime, boolean orderByPayTimeAsc);
 
     int saveAll(List<TradeRecord> tradeRecords);
 
     long countByShareName(String shareName);
 
     List<TradeRecordCount> groupByShareName();
+
+    TradeRecord update(TradeRecord tradeRecord) throws Exception;
+
+    List<TradeRecordCount> frequency(long userId);
 }

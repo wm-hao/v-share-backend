@@ -19,6 +19,7 @@ public class BaseRequest {
     private String timeOrder;
     private long userId;
     private String reverse;
+    private String alias;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp startTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,29 +1,16 @@
 package zhh.share.pojo;
 
+import lombok.Data;
+
 /**
  * @author richer
  * @date 2020/7/22 5:52 下午
  */
+@Data
 public class TradeRecordCountBean implements TradeRecordCount {
 
     private String shareName;
     private long total;
+    private String date;
 
-    @Override
-    public String getShareName() {
-        return null;
-    }
-
-    @Override
-    public long getTotal() {
-        return 0;
-    }
-
-    @Override
-    public String toString() {
-        return "TradeRecordCountBean{" +
-                "shareName='" + shareName + '\'' +
-                ", total=" + total +
-                '}';
-    }
 }

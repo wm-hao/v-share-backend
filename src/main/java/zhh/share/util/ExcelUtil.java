@@ -215,10 +215,10 @@ public class ExcelUtil {
         resultData.setShareName(name);
         resultData.setShareCode(code);
         resultData.setFee(5.00);
-        if (stockExchange.contains(ShareConstant.SocketExchange.ShenZhen.getDesc())) {
-            resultData.setStockExchange(ShareConstant.SocketExchange.ShenZhen.getType());
-        } else if (stockExchange.contains(ShareConstant.SocketExchange.ShangHai.getDesc())) {
-            resultData.setStockExchange(ShareConstant.SocketExchange.ShangHai.getType());
+        if (stockExchange.contains(ShareConstant.StockExchange.ShenZhen.getDesc())) {
+            resultData.setStockExchange(ShareConstant.StockExchange.ShenZhen.getType());
+        } else if (stockExchange.contains(ShareConstant.StockExchange.ShangHai.getDesc())) {
+            resultData.setStockExchange(ShareConstant.StockExchange.ShangHai.getType());
         }
         if (optType.contains(ShareConstant.PayType.BUY.getDesc())) {
             resultData.setPayType(ShareConstant.PayType.BUY.getType());
@@ -230,6 +230,7 @@ public class ExcelUtil {
             resultData.setPayType(ShareConstant.PayType.TAX.getType());
         }
         resultData.setPayTime(tradeTime);
+        resultData.setDate(TimeUtil.getStringFromTimestamp(tradeTime, TimeUtil.TimeFormat.YYYY_MM_DD));
         resultData.setCreateTime(TimeUtil.getCurrentTimestamp());
         resultData.setUpdateTime(TimeUtil.getCurrentTimestamp());
         resultData.setPayAmount(Double.parseDouble(amount));

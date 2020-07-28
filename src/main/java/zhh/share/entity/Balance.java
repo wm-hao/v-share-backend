@@ -33,8 +33,6 @@ public class Balance extends BaseEntity {
     @Column(columnDefinition = "bigint comment '用户编号'")
     private Long userId;
 
-    @Column(columnDefinition = "varchar(8) comment '日期'")
-    private String date;
 
     @Column(columnDefinition = "double comment '利润'")
     private Double profit;

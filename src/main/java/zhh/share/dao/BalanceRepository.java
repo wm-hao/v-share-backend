@@ -15,4 +15,6 @@ import java.util.List;
 public interface BalanceRepository extends JpaRepository<Balance, Long> , JpaSpecificationExecutor<Balance> {
 
     List<Balance> findByUserIdAndStateOrderByCreateTime(long userId, int state);
+
+    Balance findByDateAndStateAndUserId(String date, int state, Long userId);
 }

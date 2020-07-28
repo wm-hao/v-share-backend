@@ -12,6 +12,7 @@ import zhh.share.dto.BaseResponse;
 import zhh.share.entity.Balance;
 import zhh.share.service.BalanceService;
 import zhh.share.util.CommonUtil;
+import zhh.share.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,5 +50,62 @@ public class BalanceController {
             log.error(e.getMessage(), e);
             return CommonUtil.fail(e.getMessage());
         }
+    }
+
+    @PostMapping("/today")
+    public BaseResponse updateCurrentDayBalance(@RequestBody Balance balance) {
+        List<Balance> balances = new ArrayList<>();
+        try {
+            Balance qryBalance = balanceService.findCurrentDayBalance(balance.getUserId());
+            if (qryBalance == null) {
+                qryBalance = balance;
+                qryBalance.setUpdateTime(TimeUtil.getCurrentTimestamp());
+                qryBalance.setCreateTime(TimeUtil.getCurrentTimestamp());
+                qryBalance.setState(CommonConstant.State.STATE_VALID);
+                qryBalance.setDate(TimeUtil.getCurrentDay());
+                qryBalance.setTotal(CommonUtil.processDoubleNull(balance.getCashAmount()) + CommonUtil.processDoubleNull(balance.getFundAmount()) + CommonUtil.processDoubleNull(balance.getShareAmount()));
+                balanceService.save(qryBalance);
+            } else {
+                qryBalance.setUpdateTime(TimeUtil.getCurrentTimestamp());
+                qryBalance.setProfit(balance.getProfit());
+                qryBalance.setFundAmount(balance.getFundAmount());
+                qryBalance.setCashAmount(balance.getCashAmount());
+                qryBalance.setShareAmount(balance.getShareAmount());
+                qryBalance.setTotal(CommonUtil.processDoubleNull(balance.getCashAmount()) + CommonUtil.processDoubleNull(balance.getFundAmount()) + CommonUtil.processDoubleNull(balance.getShareAmount()));
+                balanceService.save(qryBalance);
+            }
+            balances.add(qryBalance);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return CommonUtil.fail(e.getMessage());
+        }
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.ADD_CUR_DAY_BALANCE);
+        response.setRows(balances);
+        response.setTotal(balances.size());
+        return response;
+    }
+
+    @GetMapping("/today")
+    public BaseResponse qryCurrentDayBalance(@RequestParam long userId) {
+        List<Balance> balances = new ArrayList<>();
+        try {
+            Balance qryBalance = balanceService.findCurrentDayBalance(userId);
+            if (qryBalance == null) {
+                qryBalance = new Balance();
+                qryBalance.setProfit(0d);
+                qryBalance.setTotal(0d);
+                qryBalance.setShareAmount(0d);
+                qryBalance.setCashAmount(0d);
+                qryBalance.setFundAmount(0d);
+            }
+            balances.add(qryBalance);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return CommonUtil.fail(e.getMessage());
+        }
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_CUR_DAY_BALANCE);
+        response.setRows(balances);
+        response.setTotal(balances.size());
+        return response;
     }
 }

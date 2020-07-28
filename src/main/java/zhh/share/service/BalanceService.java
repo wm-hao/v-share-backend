@@ -17,4 +17,6 @@ public interface BalanceService {
     Page<Balance> findByUserIdPagination(long userId, int page, int size, boolean asc);
 
     List<Balance> saveAll(List<Balance> balances);
+
+    Balance findCurrentDayBalance(Long userId) throws Exception;
 }

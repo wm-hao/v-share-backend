@@ -11,6 +11,7 @@ import zhh.share.dao.BalanceRepository;
 import zhh.share.entity.Balance;
 import zhh.share.entity.BaseEntity;
 import zhh.share.service.BalanceService;
+import zhh.share.util.TimeUtil;
 
 import javax.persistence.criteria.Predicate;
 import java.util.List;
@@ -47,5 +48,10 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public List<Balance> saveAll(List<Balance> balances) {
         return balanceRepository.saveAll(balances);
+    }
+
+    @Override
+    public Balance findCurrentDayBalance(Long userId) throws Exception {
+        return balanceRepository.findByDateAndStateAndUserId(TimeUtil.getCurrentDay(), CommonConstant.State.STATE_VALID, userId);
     }
 }

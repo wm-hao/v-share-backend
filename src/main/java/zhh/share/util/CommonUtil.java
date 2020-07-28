@@ -3,6 +3,7 @@ package zhh.share.util;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import zhh.share.constant.CommonConstant;
+import zhh.share.constant.ShareConstant;
 import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
 
@@ -60,4 +61,21 @@ public class CommonUtil {
         return null;
     }
 
+    public static ShareConstant.StockExchange convertStockExchange(String stockExchange) {
+        if (StringUtils.isNotBlank(stockExchange)) {
+            if (stockExchange.startsWith(ShareConstant.StockExchange.ShangHai.getCodePrefix())) {
+                return ShareConstant.StockExchange.ShangHai;
+            } else if (stockExchange.startsWith(ShareConstant.StockExchange.ShenZhen.getCodePrefix())) {
+                return ShareConstant.StockExchange.ShenZhen;
+            }
+        }
+        return null;
+    }
+
+    public static double processDoubleNull(Double amount) {
+        if (amount == null) {
+            return 0d;
+        }
+        return amount;
+    }
 }

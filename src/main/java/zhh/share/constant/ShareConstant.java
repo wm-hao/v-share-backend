@@ -9,7 +9,7 @@ public class ShareConstant {
     public enum PayType {
         BUY("BUY", "买入"),
         SELL("SELL", "卖出"),
-        BONUS("BOUNS", "股息入账"),
+        BONUS("BONUS", "股息入账"),
         TAX("TAX", "股息红利税补缴");
 
         private String type;
@@ -29,16 +29,18 @@ public class ShareConstant {
         }
     }
 
-    public enum SocketExchange {
-        ShangHai("SH", "上海"),
-        ShenZhen("SZ", "深圳");
+    public enum StockExchange {
+        ShangHai("SH", "上海", "6"),
+        ShenZhen("SZ", "深圳", "0");
 
         private String type;
         private String desc;
+        private String codePrefix;
 
-        SocketExchange(String type, String desc) {
+        StockExchange(String type, String desc, String codePrefix) {
             this.type = type;
             this.desc = desc;
+            this.codePrefix = codePrefix;
         }
 
         public String getType() {
@@ -47,6 +49,10 @@ public class ShareConstant {
 
         public String getDesc() {
             return desc;
+        }
+
+        public String getCodePrefix() {
+            return codePrefix;
         }
     }
 }

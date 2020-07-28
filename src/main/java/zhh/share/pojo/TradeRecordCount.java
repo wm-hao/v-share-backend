@@ -9,4 +9,6 @@ public interface TradeRecordCount {
     String getShareName();
 
     long getTotal();
+
+    String getDate();
 }

@@ -3,6 +3,7 @@ package zhh.share;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import zhh.share.constant.CommonConstant;
 import zhh.share.constant.ShareConstant;
+import zhh.share.dao.TradeRecordRepository;
 import zhh.share.entity.Balance;
 import zhh.share.entity.BalanceChange;
 import zhh.share.entity.TradeRecord;
@@ -28,6 +30,7 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ShareApplication.class})
@@ -54,6 +57,9 @@ public class ShareApplicationTests {
     @Autowired
     BalanceService balanceService;
 
+    @Autowired
+    TradeRecordRepository tradeRecordRepository;
+
     @Test
     public void testQryTradeRecord() throws Exception {
         TradeRecord tradeRecord = new TradeRecord();
@@ -67,7 +73,7 @@ public class ShareApplicationTests {
         tradeRecord.setFee(5.20);
         tradeRecord.setPayTime(TimeUtil.getTimestampFromString("20200505112346", TimeUtil.TimeFormat.YYYYMMDDHIMMSS));
         tradeRecord.setPayType(ShareConstant.PayType.BUY.getType());
-        tradeRecord.setStockExchange(ShareConstant.SocketExchange.ShangHai.getType());
+        tradeRecord.setStockExchange(ShareConstant.StockExchange.ShangHai.getType());
         TradeRecord newTrade = new TradeRecord();
         BeanUtils.copyProperties(tradeRecord, newTrade);
         newTrade.setShareName("正邦科技");
@@ -81,7 +87,7 @@ public class ShareApplicationTests {
     public void testQryPage() throws Exception {
         Timestamp start = TimeUtil.getTimestampFromString("2020-05-09 11:23:46", TimeUtil.TimeFormat.YYYY_MM_DD_HH_MM_SS);
         Timestamp end = TimeUtil.getTimestampFromString("2020-05-20 11:23:46", TimeUtil.TimeFormat.YYYY_MM_DD_HH_MM_SS);
-        Page<TradeRecord> tradeRecords = tradeRecordService.findByAllProps(1L,0, 5, "天", null, null, start, end, false);
+        Page<TradeRecord> tradeRecords = tradeRecordService.findByAllProps(1L, 0, 5, "", "", "K", null, null, null, false);
         for (TradeRecord tradeRecord : tradeRecords) {
             System.out.println(tradeRecord);
         }
@@ -109,6 +115,10 @@ public class ShareApplicationTests {
         }
         for (String keepName : keep) {
             log.error("持有的:" + keepName);
+        }
+        List<TradeRecordCount> tradeRecordCounts1 = tradeRecordService.frequency(1L);
+        for (TradeRecordCount count : tradeRecordCounts1) {
+           log.error(count.getDate() + "--" + count.getTotal());
         }
     }
 
@@ -161,10 +171,11 @@ public class ShareApplicationTests {
         balance.setCreateTime(TimeUtil.getCurrentTimestamp());
         balance.setDate(TimeUtil.getCurrentDay());
         balance.setUserId(1L);
-        balance.setTotal(100000d);
-        balance.setCashAmount(500d);
-        balance.setFundAmount(20000d);
-        balance.setShareAmount(79500d);
+        balance.setTotal(27239.84d);
+        balance.setCashAmount(4330.04d);
+        balance.setFundAmount(2011.8);
+        balance.setShareAmount(20898.00);
+        balance.setProfit(227.00);
         balance.setState(CommonConstant.State.STATE_VALID);
         balanceService.save(balance);
     }
@@ -203,5 +214,18 @@ public class ShareApplicationTests {
         }
         bufferedReader.close();
         balanceService.saveAll(balances);
+    }
+
+    @Test
+    public void testUpdateRecord() throws Exception {
+       TradeRecord tradeRecord = tradeRecordRepository.getOne(2436l);
+       tradeRecord.setTradeSeq("1111");
+       tradeRecordService.update(tradeRecord);
+    }
+
+    @Test
+    public void testQryCurBalance() throws Exception {
+        Balance balance = balanceService.findCurrentDayBalance(1L);
+        Assert.assertNull(balance);
     }
 }
