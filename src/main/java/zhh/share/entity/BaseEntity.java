@@ -19,11 +19,11 @@ public class BaseEntity {
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '创建时间' default CURRENT_TIMESTAMP()")
+    @Column(columnDefinition = "datetime comment '创建时间' ")
     private Date createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '更新时间' default CURRENT_TIMESTAMP()")
+    @Column(columnDefinition = "datetime comment '更新时间' ")
     private Date updateTime;
 
     @Column(columnDefinition = "int(1) comment '状态' default 1")

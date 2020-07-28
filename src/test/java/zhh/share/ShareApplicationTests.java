@@ -192,7 +192,7 @@ public class ShareApplicationTests {
 
     @Test
     public void testSaveBalanceFromFile() throws Exception {
-        File file = new File("/Users/zhuhaohao/Documents/profit.txt");
+        File file = new File("D:/profit.txt");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = null;
         List<Balance> balances = new ArrayList<>();

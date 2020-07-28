@@ -14,14 +14,14 @@ import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
 import zhh.share.entity.TradeRecord;
 import zhh.share.pojo.TradeRecordCount;
+import zhh.share.pojo.TradeRecordCountBean;
 import zhh.share.service.TradeRecordService;
 import zhh.share.util.CommonUtil;
 import zhh.share.util.ExcelUtil;
 import zhh.share.util.TimeUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author richer
@@ -147,16 +147,54 @@ public class TradeController {
 
     @GetMapping("/frequency")
     public BaseResponse frequency(@RequestParam long userId, @RequestParam String type) {
-        List<TradeRecordCount> tradeRecordCounts = new ArrayList<>();
+        List<TradeRecordCountBean> finalRecordCounts = new ArrayList<>();
         try {
-            tradeRecordCounts = tradeRecordService.frequency(userId);
+            List<TradeRecordCount> tradeRecordCounts = tradeRecordService.frequency(userId);
+            Map<String, Long> counts = new TreeMap<>();
+            if (StringUtils.equals(CommonConstant.FrequencyType.YEAR, type)) {
+                for (TradeRecordCount count : tradeRecordCounts) {
+                    String date = count.getDate();
+                    if (StringUtils.isNotBlank(date)) {
+                        date = date.substring(0, 4);
+                    }
+                    if (!counts.containsKey(date)) {
+                        counts.put(date, 0L);
+                    }
+                    counts.put(date, count.getTotal() + counts.get(date));
+                }
+            } else if (StringUtils.equals(CommonConstant.FrequencyType.MONTH, type)) {
+                for (TradeRecordCount count : tradeRecordCounts) {
+                    String date = count.getDate();
+                    if (StringUtils.isNotBlank(date)) {
+                        date = date.substring(0, 7);
+                    }
+                    if (!counts.containsKey(date)) {
+                        counts.put(date, 0L);
+                    }
+                    counts.put(date, count.getTotal() + counts.get(date));
+                }
+            } else {
+                for (TradeRecordCount count : tradeRecordCounts) {
+                    String date = count.getDate();
+                    if (!counts.containsKey(date)) {
+                        counts.put(date, 0L);
+                    }
+                    counts.put(date, count.getTotal() + counts.get(date));
+                }
+            }
+            for (String date : counts.keySet()) {
+                TradeRecordCountBean bean = new TradeRecordCountBean();
+                bean.setDate(date);
+                bean.setTotal(counts.get(date));
+                finalRecordCounts.add(bean);
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return CommonUtil.fail(e.getMessage());
         }
         BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
-        response.setTotal(tradeRecordCounts.size());
-        response.setRows(tradeRecordCounts);
+        response.setTotal(finalRecordCounts.size());
+        response.setRows(finalRecordCounts);
         return response;
     }
 }

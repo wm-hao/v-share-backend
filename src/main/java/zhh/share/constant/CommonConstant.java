@@ -52,4 +52,9 @@ public class CommonConstant {
     public interface Reverse {
         String YES = "Y";
     }
+
+    public interface FrequencyType {
+        String YEAR = "year";
+        String MONTH = "month";
+    }
 }
