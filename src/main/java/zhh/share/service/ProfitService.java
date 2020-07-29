@@ -13,7 +13,8 @@ public interface ProfitService {
 
     void saveAll(List<Profit> profits);
 
-    void generateProfitAll();
+    void generateProfitAll(long userId) throws Exception;
 
-    List<TradeProfitCount> calculateTradeProfit();
+    List<TradeProfitCount> calculateTradeProfit(long userId);
+    List<TradeProfitCount> calculateTradeLoss(long userId);
 }

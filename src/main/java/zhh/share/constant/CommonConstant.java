@@ -57,4 +57,9 @@ public class CommonConstant {
         String YEAR = "year";
         String MONTH = "month";
     }
+
+    public interface Top {
+        String PROFIT = "profit";
+        String LOSS = "loss";
+    }
 }

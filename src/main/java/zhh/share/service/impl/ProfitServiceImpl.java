@@ -28,8 +28,8 @@ public class ProfitServiceImpl implements ProfitService {
     }
 
     @Override
-    public void generateProfitAll() {
-        List<TradeProfitCount> profitCounts = profitRepository.calculateProfit();
+    public void generateProfitAll(long userId) throws Exception {
+        List<TradeProfitCount> profitCounts = profitRepository.calculateProfit(userId, Double.MAX_VALUE);
         if (profitCounts != null && profitCounts.size() > 0) {
             List<Profit> profits = new ArrayList<>();
             for (TradeProfitCount tradeProfitCount : profitCounts) {
@@ -45,6 +45,8 @@ public class ProfitServiceImpl implements ProfitService {
                 profit.setShareName(tradeProfitCount.getShareName());
                 profit.setShareCode(tradeProfitCount.getShareCode());
                 profit.setState(CommonConstant.State.STATE_VALID);
+                profit.setDate(TimeUtil.getCurrentDay());
+                profit.setUserId(userId);
                 profits.add(profit);
             }
             if (profits.size() > 0) {
@@ -54,7 +56,12 @@ public class ProfitServiceImpl implements ProfitService {
     }
 
     @Override
-    public List<TradeProfitCount> calculateTradeProfit() {
-        return profitRepository.calculateProfit();
+    public List<TradeProfitCount> calculateTradeProfit(long userId) {
+        return profitRepository.calculateProfit(userId, 0d);
+    }
+
+    @Override
+    public List<TradeProfitCount> calculateTradeLoss(long userId) {
+        return profitRepository.calculateLoss(userId, 0d);
     }
 }

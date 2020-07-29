@@ -3,6 +3,7 @@ package zhh.share.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,11 +13,12 @@ import java.util.Date;
  * @author richer
  * @date 2020/7/23 10:35 上午
  */
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Profit {
+public class Profit extends BaseEntity{
 
     @Id
     @GeneratedValue
@@ -38,19 +40,6 @@ public class Profit {
     @Column(columnDefinition = "double comment '利润总额'")
     private Double profit;
 
-    @Column(columnDefinition = "int comment '累计持股天数'")
-    private Integer keepDays;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '创建时间'")
-    private Date createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "datetime comment '更新时间'")
-    private Date updateTime;
-
-    @Column(columnDefinition = "int(1) comment '状态'")
-    private Integer state;
 
     @Transient
     public static final String CREATE_TIME = "createTime";

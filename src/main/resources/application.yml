@@ -52,4 +52,4 @@ token:
   expire:
     hours: 4
 upload:
-  dir: D:/tmp
+  dir: /Users/zhuhaohao/work/tmp

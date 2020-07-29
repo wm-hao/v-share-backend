@@ -18,6 +18,7 @@ import zhh.share.entity.Balance;
 import zhh.share.entity.BalanceChange;
 import zhh.share.entity.TradeRecord;
 import zhh.share.entity.User;
+import zhh.share.pojo.TradeProfitCount;
 import zhh.share.pojo.TradeRecordCount;
 import zhh.share.service.*;
 import zhh.share.util.ExcelUtil;
@@ -30,7 +31,6 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ShareApplication.class})
@@ -118,15 +118,34 @@ public class ShareApplicationTests {
         }
         List<TradeRecordCount> tradeRecordCounts1 = tradeRecordService.frequency(1L);
         for (TradeRecordCount count : tradeRecordCounts1) {
-           log.error(count.getDate() + "--" + count.getTotal());
+            log.error(count.getDate() + "--" + count.getTotal());
         }
     }
 
     @Test
-    public void testGenerateProfitAll() {
-        profitService.generateProfitAll();
+    public void testGenerateProfitAll() throws Exception {
+        profitService.generateProfitAll(1L);
     }
 
+    @Test
+    public void testCalculateProfit() {
+        List<TradeProfitCount> calculateTradeProfitDesc = profitService.calculateTradeProfit(1L);
+        List<TradeProfitCount> calculateTradeProfitAsc = profitService.calculateTradeLoss(1L);
+        int i = 0;
+        for (TradeProfitCount profitCount : calculateTradeProfitAsc) {
+            if (i++ == 10) {
+                break;
+            }
+            log.error(profitCount.getShareName() + "," + profitCount.getAmount());
+        }
+        i = 0;
+        for (TradeProfitCount profitCount : calculateTradeProfitDesc) {
+            if (i++ == 10) {
+                break;
+            }
+            log.error(profitCount.getShareName() + "," + profitCount.getAmount());
+        }
+    }
 
     @Test
     public void testAddNewUser() throws Exception {
@@ -218,9 +237,9 @@ public class ShareApplicationTests {
 
     @Test
     public void testUpdateRecord() throws Exception {
-       TradeRecord tradeRecord = tradeRecordRepository.getOne(2436l);
-       tradeRecord.setTradeSeq("1111");
-       tradeRecordService.update(tradeRecord);
+        TradeRecord tradeRecord = tradeRecordRepository.getOne(2436l);
+        tradeRecord.setTradeSeq("1111");
+        tradeRecordService.update(tradeRecord);
     }
 
     @Test
