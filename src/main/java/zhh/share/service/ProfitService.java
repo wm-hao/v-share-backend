@@ -16,5 +16,8 @@ public interface ProfitService {
     void generateProfitAll(long userId) throws Exception;
 
     List<TradeProfitCount> calculateTradeProfit(long userId);
+
     List<TradeProfitCount> calculateTradeLoss(long userId);
+
+    List<TradeProfitCount> profitLossCompare(long userId);
 }

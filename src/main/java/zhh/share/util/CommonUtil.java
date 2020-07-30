@@ -6,6 +6,7 @@ import zhh.share.constant.CommonConstant;
 import zhh.share.constant.ShareConstant;
 import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
+import zhh.share.dto.Pagination;
 
 import java.util.Random;
 
@@ -77,5 +78,20 @@ public class CommonUtil {
             return 0d;
         }
         return amount;
+    }
+
+    public static void processPagination(Pagination pagination, int limit) {
+        if (pagination != null) {
+            if (pagination.getPage() < 0) {
+                pagination.setPage(0);
+            }
+            if (pagination.getSize() <= 0) {
+                pagination.setSize(1);
+            }
+            int start = Math.min(pagination.getPage() * pagination.getSize(), limit);
+            int end = Math.min(start + pagination.getSize(), limit);
+            pagination.setStart(start);
+            pagination.setEnd(end);
+        }
     }
 }

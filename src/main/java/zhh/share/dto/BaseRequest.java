@@ -10,9 +10,8 @@ import java.sql.Timestamp;
  * @date 2020/7/21 4:05 下午
  */
 @Data
-public class BaseRequest {
-    private int page;
-    private int size;
+public class BaseRequest extends Pagination{
+
     private String shareName;
     private String shareCode;
     private String payType;

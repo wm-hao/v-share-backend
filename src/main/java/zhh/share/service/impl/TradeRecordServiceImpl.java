@@ -123,4 +123,9 @@ public class TradeRecordServiceImpl implements TradeRecordService {
         return tradeRecordRepository.frequency(userId);
     }
 
+    @Override
+    public List<TradeRecordCount> top(long userId) {
+        return tradeRecordRepository.top(userId);
+    }
+
 }

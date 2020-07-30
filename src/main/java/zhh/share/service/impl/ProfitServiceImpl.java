@@ -64,4 +64,9 @@ public class ProfitServiceImpl implements ProfitService {
     public List<TradeProfitCount> calculateTradeLoss(long userId) {
         return profitRepository.calculateLoss(userId, 0d);
     }
+
+    @Override
+    public List<TradeProfitCount> profitLossCompare(long userId) {
+        return profitRepository.profitLossCompare(userId);
+    }
 }

@@ -7,13 +7,17 @@ import zhh.share.constant.CommonConstant;
 import zhh.share.dto.BaseResponse;
 import zhh.share.pojo.TradeProfitCount;
 import zhh.share.service.ProfitService;
+import zhh.share.util.CommonUtil;
+
+import java.util.List;
 
 /**
  * @author richer
  * @date 2020/7/29 5:41 下午
  */
 @CrossOrigin
-@RestController("/profit")
+@RequestMapping("/profit")
+@RestController
 public class ProfitController {
 
 
@@ -22,13 +26,33 @@ public class ProfitController {
 
     @GetMapping("/top")
     @ResponseBody
-    public BaseResponse top(@RequestParam String type) throws Exception {
-        List<TradeProfitCount>
+    public BaseResponse top(@RequestParam String type, @RequestParam long userId, @RequestParam int page, @RequestParam int size) throws Exception {
+        List<TradeProfitCount> tradeProfitCounts = null;
         if (StringUtils.equals(CommonConstant.Top.LOSS, type)) {
-
+            tradeProfitCounts = profitService.calculateTradeLoss(userId);
+        } else if (StringUtils.equals(CommonConstant.Top.PROFIT, type)) {
+            tradeProfitCounts = profitService.calculateTradeProfit(userId);
+        } else {
+            throw new Exception("查询类型不正确");
         }
-
+        page = page < 0 ? 0 : page;
+        size = size < 0 ? 1 : size;
+        int start = page * size;
+        int end = Math.min(start + size, tradeProfitCounts.size());
+        BaseResponse baseResponse = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        baseResponse.setTotal(tradeProfitCounts.size());
+        baseResponse.setRows(tradeProfitCounts.subList(start, end));
+        return baseResponse;
     }
 
+    @GetMapping("/compare")
+    @ResponseBody
+    public BaseResponse compare(@RequestParam long userId) throws Exception {
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        List<TradeProfitCount> tradeProfitCounts = profitService.profitLossCompare(userId);
+        response.setTotal(tradeProfitCounts.size());
+        response.setRows(tradeProfitCounts);
+        return response;
+    }
 
 }

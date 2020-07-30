@@ -37,4 +37,6 @@ public interface TradeRecordService {
     TradeRecord update(TradeRecord tradeRecord) throws Exception;
 
     List<TradeRecordCount> frequency(long userId);
+
+    List<TradeRecordCount> top(long userId);
 }

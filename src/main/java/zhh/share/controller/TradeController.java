@@ -12,6 +12,7 @@ import zhh.share.constant.CommonConstant;
 import zhh.share.constant.ShareConstant;
 import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
+import zhh.share.dto.Pagination;
 import zhh.share.entity.TradeRecord;
 import zhh.share.pojo.TradeRecordCount;
 import zhh.share.pojo.TradeRecordCountBean;
@@ -21,7 +22,10 @@ import zhh.share.util.ExcelUtil;
 import zhh.share.util.TimeUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author richer
@@ -195,6 +199,20 @@ public class TradeController {
         BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
         response.setTotal(finalRecordCounts.size());
         response.setRows(finalRecordCounts);
+        return response;
+    }
+
+    @GetMapping("/top")
+    @ResponseBody
+    public BaseResponse top(@RequestParam long userId, @RequestParam int page, @RequestParam int size) throws Exception {
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        List<TradeRecordCount> recordCounts = tradeRecordService.top(userId);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        pagination.setSize(size);
+        CommonUtil.processPagination(pagination, recordCounts.size());
+        response.setRows(recordCounts.subList(pagination.getStart(), pagination.getEnd()));
+        response.setTotal(recordCounts.size());
         return response;
     }
 }
