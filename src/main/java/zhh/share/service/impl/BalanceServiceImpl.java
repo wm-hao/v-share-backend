@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import zhh.share.constant.CommonConstant;
 import zhh.share.dao.BalanceRepository;
 import zhh.share.entity.Balance;
+import zhh.share.entity.BalanceChange;
 import zhh.share.entity.BaseEntity;
+import zhh.share.pojo.BalanceCount;
 import zhh.share.service.BalanceService;
 import zhh.share.util.TimeUtil;
 
@@ -42,7 +44,7 @@ public class BalanceServiceImpl implements BalanceService {
             Predicate predicate = criteriaBuilder.conjunction();
             predicate.getExpressions().add(criteriaBuilder.equal(root.get(Balance.USER_ID), userId));
             return predicate;
-        }, PageRequest.of(page, size, asc ? Sort.Direction.ASC : Sort.Direction.DESC, BaseEntity.CREATE_TIME));
+        }, PageRequest.of(page, size, asc ? Sort.Direction.ASC : Sort.Direction.DESC, BaseEntity.DATE));
     }
 
     @Override
@@ -53,5 +55,10 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public Balance findCurrentDayBalance(Long userId) throws Exception {
         return balanceRepository.findByDateAndStateAndUserId(TimeUtil.getCurrentDay(), CommonConstant.State.STATE_VALID, userId);
+    }
+
+    @Override
+    public List<BalanceCount> qryProfitGroupByDate(long userId) {
+        return balanceRepository.qryProfitGroupByDate(userId);
     }
 }

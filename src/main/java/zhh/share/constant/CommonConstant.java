@@ -7,6 +7,8 @@ package zhh.share.constant;
 public class CommonConstant {
 
     public interface Message {
+        String UPDATE_SUCCESS = "更新成功";
+        String ADD_SUCCESS = "添加成功";
         String QRY_SUCCESS = "查询成功";
         String ADD_NEW_USER = "新增用户成功";
         String IMPORT_TRADE_RECORD = "通过表格文件导入交易记录成功";

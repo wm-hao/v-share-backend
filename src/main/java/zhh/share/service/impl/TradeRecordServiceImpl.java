@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import zhh.share.constant.CommonConstant;
 import zhh.share.dao.TradeRecordRepository;
 import zhh.share.entity.TradeRecord;
@@ -22,6 +23,7 @@ import java.util.Optional;
  * @date 2020/7/21 10:27 上午
  */
 @Service
+@Transactional
 public class TradeRecordServiceImpl implements TradeRecordService {
 
     @Autowired

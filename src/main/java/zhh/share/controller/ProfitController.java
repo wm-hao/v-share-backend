@@ -2,9 +2,11 @@ package zhh.share.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import zhh.share.constant.CommonConstant;
 import zhh.share.dto.BaseResponse;
+import zhh.share.entity.Profit;
 import zhh.share.pojo.TradeProfitCount;
 import zhh.share.service.ProfitService;
 import zhh.share.util.CommonUtil;
@@ -52,6 +54,33 @@ public class ProfitController {
         List<TradeProfitCount> tradeProfitCounts = profitService.profitLossCompare(userId);
         response.setTotal(tradeProfitCounts.size());
         response.setRows(tradeProfitCounts);
+        return response;
+    }
+
+    @GetMapping("/total")
+    @ResponseBody
+    public BaseResponse total(@RequestParam long userId) throws Exception {
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        List<TradeProfitCount> tradeProfitCounts = profitService.profit(userId);
+        response.setTotal(tradeProfitCounts.size());
+        response.setRows(tradeProfitCounts);
+        return response;
+    }
+
+    @GetMapping("/pagination")
+    @ResponseBody
+    public BaseResponse pagination(@RequestParam long userId, @RequestParam int page, @RequestParam int size, @RequestParam String order, @RequestParam String shareName, @RequestParam String showKeep) throws Exception {
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        Page<Profit> profits = profitService.pagination(userId, page, size, StringUtils.equals(CommonConstant.Order.ASC, order), shareName, showKeep);
+        response.setTotal(profits.getTotalElements());
+        for (Profit profit : profits.getContent()) {
+            if (profit != null) {
+                profit.setKeepCount(CommonUtil.processDoubleNull(profit.getKeepCount()));
+                profit.setKeepAmount(CommonUtil.processDoubleNull(profit.getKeepAmount()));
+                profit.setProfit(CommonUtil.processDoubleNull(profit.getProfit()));
+            }
+        }
+        response.setRows(profits.getContent());
         return response;
     }
 

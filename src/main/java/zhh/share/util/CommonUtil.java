@@ -7,6 +7,7 @@ import zhh.share.constant.ShareConstant;
 import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
 import zhh.share.dto.Pagination;
+import zhh.share.entity.BaseEntity;
 
 import java.util.Random;
 
@@ -92,6 +93,14 @@ public class CommonUtil {
             int end = Math.min(start + pagination.getSize(), limit);
             pagination.setStart(start);
             pagination.setEnd(end);
+        }
+    }
+    public static void fillDefaultProps(BaseEntity baseEntity) throws Exception {
+        if (baseEntity != null) {
+            baseEntity.setState(CommonConstant.State.STATE_VALID);
+            baseEntity.setCreateTime(TimeUtil.getCurrentTimestamp());
+            baseEntity.setUpdateTime(TimeUtil.getCurrentTimestamp());
+            baseEntity.setDate(TimeUtil.getCurrentDay());
         }
     }
 }

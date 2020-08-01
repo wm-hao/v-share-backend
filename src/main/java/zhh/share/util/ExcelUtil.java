@@ -1,6 +1,5 @@
 package zhh.share.util;
 
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -18,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -140,7 +138,7 @@ public class ExcelUtil {
     /**
      * 将单元格内容转换为字符串
      */
-    private static String convertCellValueToString(Cell cell) {
+    public static String convertCellValueToString(Cell cell) {
         if (cell == null) {
             return null;
         }

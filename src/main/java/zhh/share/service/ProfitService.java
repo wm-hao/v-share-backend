@@ -1,5 +1,6 @@
 package zhh.share.service;
 
+import org.springframework.data.domain.Page;
 import zhh.share.entity.Profit;
 import zhh.share.pojo.TradeProfitCount;
 
@@ -20,4 +21,10 @@ public interface ProfitService {
     List<TradeProfitCount> calculateTradeLoss(long userId);
 
     List<TradeProfitCount> profitLossCompare(long userId);
+
+    List<TradeProfitCount> profit(long userId);
+
+    Page<Profit> pagination(long userId, int page, int size, boolean asc, String shareName, String showKeep);
+
+    void calculateProfit(long userId, String shareCode) throws Exception;
 }

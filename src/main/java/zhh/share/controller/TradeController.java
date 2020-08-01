@@ -16,6 +16,7 @@ import zhh.share.dto.Pagination;
 import zhh.share.entity.TradeRecord;
 import zhh.share.pojo.TradeRecordCount;
 import zhh.share.pojo.TradeRecordCountBean;
+import zhh.share.service.ProfitService;
 import zhh.share.service.TradeRecordService;
 import zhh.share.util.CommonUtil;
 import zhh.share.util.ExcelUtil;
@@ -40,6 +41,9 @@ public class TradeController {
 
     @Autowired
     TradeRecordService tradeRecordService;
+
+    @Autowired
+    ProfitService profitService;
 
     @Value("${upload.dir}")
     private String dir;
@@ -105,6 +109,7 @@ public class TradeController {
                 ShareConstant.StockExchange stockExchange = CommonUtil.convertStockExchange(tradeRecord.getShareCode());
                 tradeRecord.setStockExchange(stockExchange == null ? "" : stockExchange.getType());
                 tradeRecordService.save(tradeRecord);
+                profitService.calculateProfit(tradeRecord.getUserId(), tradeRecord.getShareCode());
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return CommonUtil.fail(e.getMessage());

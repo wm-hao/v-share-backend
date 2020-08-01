@@ -247,4 +247,10 @@ public class ShareApplicationTests {
         Balance balance = balanceService.findCurrentDayBalance(1L);
         Assert.assertNull(balance);
     }
+
+    @Test
+    public void testCalculateSomeProfit() throws Exception {
+        profitService.calculateProfit(1l, "159915");
+        profitService.calculateProfit(1L, "111");
+    }
 }

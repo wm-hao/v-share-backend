@@ -2,6 +2,7 @@ package zhh.share.service;
 
 import org.springframework.data.domain.Page;
 import zhh.share.entity.Balance;
+import zhh.share.pojo.BalanceCount;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface BalanceService {
     List<Balance> saveAll(List<Balance> balances);
 
     Balance findCurrentDayBalance(Long userId) throws Exception;
+
+    List<BalanceCount> qryProfitGroupByDate(long userId);
 }

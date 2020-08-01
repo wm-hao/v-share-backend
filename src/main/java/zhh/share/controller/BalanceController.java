@@ -14,9 +14,7 @@ import zhh.share.service.BalanceService;
 import zhh.share.util.CommonUtil;
 import zhh.share.util.TimeUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author richer
@@ -107,5 +105,41 @@ public class BalanceController {
         response.setRows(balances);
         response.setTotal(balances.size());
         return response;
+    }
+
+
+    @GetMapping("/sum")
+    public BaseResponse calculateProfit(@RequestParam long userId, @RequestParam String type) throws Exception {
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        Page<Balance> page = balanceService.findByUserIdPagination(userId, 0, Integer.MAX_VALUE, true);
+        List<Balance> balances = groupByType(page.getContent(), type);
+        response.setRows(balances);
+        response.setTotal(balances.size());
+        return response;
+    }
+
+    private List<Balance> groupByType(List<Balance> balances, String type) {
+        Map<String, Double> result = new HashMap<>();
+        int length = 10;
+        if (StringUtils.equals(CommonConstant.FrequencyType.MONTH, type)) {
+            length = 7;
+        } else if (StringUtils.equals(CommonConstant.FrequencyType.YEAR, type)) {
+            length = 4;
+        }
+        for (Balance balance : balances) {
+            String key = StringUtils.substring(balance.getDate(), 0, length);
+            if (!result.containsKey(key)) {
+                result.put(key, 0d);
+            }
+            result.put(key, result.get(key) + balance.getProfit());
+        }
+        List<Balance> counts = new ArrayList<>();
+        for (String key : result.keySet()) {
+            Balance balance = new Balance();
+            balance.setProfit(result.get(key));
+            balance.setDate(key);
+            counts.add(balance);
+        }
+        return counts;
     }
 }
