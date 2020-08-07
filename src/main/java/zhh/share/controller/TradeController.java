@@ -89,6 +89,9 @@ public class TradeController {
                 tradeRecord.setUserId(userId);
             }
             tradeRecordService.saveAll(tradeRecords);
+            for (TradeRecord tradeRecord : tradeRecords) {
+                profitService.calculateProfit(userId, tradeRecord.getShareCode());
+            }
             log.info("上传成功");
         } catch (Exception e) {
             log.error("通过表格插入交易记录失败:");

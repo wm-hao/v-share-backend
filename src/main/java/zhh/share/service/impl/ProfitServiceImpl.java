@@ -89,7 +89,7 @@ public class ProfitServiceImpl implements ProfitService {
     public void calculateProfit(long userId, String shareCode) throws Exception {
         List<TradeProfitCount> tradeProfitCounts = profitRepository.calculateProfitByShareCode(userId, shareCode);
         if (tradeProfitCounts == null || tradeProfitCounts.isEmpty() || tradeProfitCounts.get(0) == null) {
-            throw new Exception("未查询到交易记录，无法计算当前盈亏");
+            throw new Exception("未查询到交易记录，无法计算当前盈亏,股票代码:" + shareCode);
         }
         TradeProfitCount count = tradeProfitCounts.get(0);
         List<Profit> profits = profitRepository.findByUserIdAndShareCodeAndState(userId, shareCode, CommonConstant.State.STATE_VALID);
