@@ -26,6 +26,8 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    data: classpath:king_balance.sql,classpath*:king_hibernate_sequence.sql,classpath:king_profit.sql,classpath*:king_trade_record.sql,classpath:king_user.sql
+    initialization-mode: embedded
   jpa:
     #指定数据库
     database: mysql
@@ -52,4 +54,7 @@ token:
   expire:
     hours: 4
 upload:
-  dir: /Users/zhuhaohao/work/tmp
+  dir: /tmp
+tokenExpireHours: 1
+verifyCodeExpireMinutes: 5
+originUrl: http://localhost:8080

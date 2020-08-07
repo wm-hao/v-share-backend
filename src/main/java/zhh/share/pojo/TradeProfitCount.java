@@ -7,9 +7,9 @@ package zhh.share.pojo;
 public interface TradeProfitCount {
     String getShareName();
 
-    double getAmount();
+    Double getAmount();
 
-    double getTotal();
+    Double getTotal();
 
     String getShareCode();
 }

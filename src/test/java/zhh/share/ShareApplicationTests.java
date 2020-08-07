@@ -162,7 +162,7 @@ public class ShareApplicationTests {
 
     @Test
     public void testFindUserByUserName() {
-        log.error(userService.findByUserName("admin"));
+        log.error(userService.findByUserName("admin22"));
     }
 
     @Test
@@ -253,4 +253,5 @@ public class ShareApplicationTests {
         profitService.calculateProfit(1l, "159915");
         profitService.calculateProfit(1L, "111");
     }
+
 }

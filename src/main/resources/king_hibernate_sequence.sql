@@ -1,0 +1,1 @@
+INSERT INTO king.hibernate_sequence (next_val) VALUES (4000);

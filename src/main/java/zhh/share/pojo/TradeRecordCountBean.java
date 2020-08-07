@@ -10,7 +10,7 @@ import lombok.Data;
 public class TradeRecordCountBean implements TradeRecordCount {
 
     private String shareName;
-    private long total;
+    private Long total;
     private String date;
 
 }

@@ -88,4 +88,6 @@ public class User {
 
     @Transient
     private boolean encryption = true;
+    @Transient
+    private String verifyCode;
 }

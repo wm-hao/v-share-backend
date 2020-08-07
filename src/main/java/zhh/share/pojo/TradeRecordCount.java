@@ -8,7 +8,7 @@ package zhh.share.pojo;
 public interface TradeRecordCount {
     String getShareName();
 
-    long getTotal();
+    Long getTotal();
 
     String getDate();
 }

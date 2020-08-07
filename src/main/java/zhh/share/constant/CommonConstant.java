@@ -6,7 +6,15 @@ package zhh.share.constant;
  */
 public class CommonConstant {
 
+    public interface Val {
+        String ACCESS_TOKEN = "accessToken";
+        String VERIFY_CODE = "verifyCode-";
+    }
+
     public interface Message {
+        String VERIFY_CODE_SUCCESS = "获取验证码成功,请查收,5分钟内有效";
+        String VERIFY_CODE_FAIL = "获取验证码失败";
+        String VALIDATE_SUCCESS = "验证成功";
         String UPDATE_SUCCESS = "更新成功";
         String ADD_SUCCESS = "添加成功";
         String QRY_SUCCESS = "查询成功";
@@ -18,6 +26,8 @@ public class CommonConstant {
         String INFO_EMPTY = "信息不能为空";
         String ADD_CUR_DAY_BALANCE = "记录当天账户资源成功";
         String QRY_CUR_DAY_BALANCE = "查询当天账户资源成功";
+        String USER_EMPTY = "用户信息不存在";
+        String USER_EMAIL_ERR = "用户信息不正确或用户邮箱不匹配";
     }
 
     public enum StatusCode {

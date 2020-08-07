@@ -7,5 +7,5 @@ package zhh.share.pojo;
 public interface BalanceCount {
     String getDate();
 
-    double getProfit();
+    Double getProfit();
 }

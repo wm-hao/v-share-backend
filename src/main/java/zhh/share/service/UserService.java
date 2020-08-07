@@ -13,5 +13,7 @@ public interface UserService {
 
     User findByUserName(String userName);
 
-    boolean validateUser(User user);
+    User validateUser(User user);
+
+    User updatePassword(User user) throws Exception;
 }

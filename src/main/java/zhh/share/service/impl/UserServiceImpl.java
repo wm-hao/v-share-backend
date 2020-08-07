@@ -41,11 +41,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean validateUser(User user) {
+    public User validateUser(User user) {
         User qryUser = this.findByUserName(user.getUserName());
         if (qryUser == null || qryUser.getState() != CommonConstant.State.STATE_VALID) {
-            return false;
+            return null;
         }
-        return StringUtils.equals(qryUser.getPassword(), CommonUtil.getMD5(user.getPassword()));
+        if (StringUtils.equals(qryUser.getPassword(), CommonUtil.getMD5(user.getPassword()))) {
+            return qryUser;
+        }
+        return null;
+    }
+
+    @Override
+    public User updatePassword(User user) throws Exception {
+        User dbUser = findByUserName(user.getUserName());
+        if (dbUser != null) {
+            dbUser.setPassword(user.getPassword());
+            userRepository.save(dbUser);
+            return dbUser;
+        } else {
+            throw new Exception("为查询到用户信息");
+        }
     }
 }

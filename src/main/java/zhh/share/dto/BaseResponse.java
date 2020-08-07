@@ -19,6 +19,7 @@ public class BaseResponse implements Serializable {
     private String code;
     private String message;
     private String desc;
+    private String data;
     private long total;
     private List rows = new ArrayList();
 
