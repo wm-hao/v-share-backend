@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import zhh.share.interceptor.TokenInterceptor;
 
@@ -27,7 +29,22 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/user/**", "/error*").addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/static/**", "/user/**", "/error*", "/css/**", "/js/**", "/fonts/**", "/img/**", "/*.ico").addPathPatterns("/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //两个*表示以/uploadFiles开始的任意层级的路径都可以访问得到图片，如<img src="../uploadFiles/img/1.png">
+        //一个*表示只可以访问assets目录下的图片文件
+        //addResourceHandler指的是访问路径，addResourceLocations指的是文件放置目录
+        /*registry.addResourceHandler("/chargeFile/**").addResourceLocations("classpath:/chargeFile");*/
+
+        registry.addResourceHandler("/img/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/img/");
+        registry.addResourceHandler("/js/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/js/");
+        registry.addResourceHandler("/css/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/css/");
+        registry.addResourceHandler("/fonts/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/fonts/");
+        registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
+        registry.addResourceHandler("/*.ico").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
     }
 
     @Bean
