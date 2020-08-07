@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/static/**", "/user/**", "/error*", "/css/**", "/js/**", "/fonts/**", "/img/**", "/*.ico").addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/index*", "/static/**", "/user/**", "/error*", "/css/**", "/js/**", "/fonts/**", "/img/**", "/*.ico").addPathPatterns("/**");
     }
 
     @Override
@@ -44,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/css/");
         registry.addResourceHandler("/fonts/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/fonts/");
         registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
+        registry.addResourceHandler("/index.*").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
         registry.addResourceHandler("/*.ico").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
     }
 
