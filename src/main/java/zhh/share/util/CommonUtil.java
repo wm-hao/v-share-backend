@@ -9,6 +9,7 @@ import zhh.share.dto.BaseResponse;
 import zhh.share.dto.Pagination;
 import zhh.share.entity.BaseEntity;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -28,8 +29,19 @@ public class CommonUtil {
         return new BaseResponse(CommonConstant.StatusCode.SUCCESS.getCode(), message, CommonConstant.StatusCode.SUCCESS.getDesc());
     }
 
+    public static BaseResponse success(String message, List<Object> rows) {
+        BaseResponse response = new BaseResponse(CommonConstant.StatusCode.SUCCESS.getCode(), message, CommonConstant.StatusCode.SUCCESS.getDesc());
+        response.setRows(rows);
+        response.setTotal(rows.size());
+        return response;
+    }
+
     public static BaseResponse fail(String message) {
         return new BaseResponse(CommonConstant.StatusCode.FAIL.getCode(), message, CommonConstant.StatusCode.FAIL.getDesc());
+    }
+
+    public static BaseResponse fail(String message, String code) {
+        return new BaseResponse(code, message, CommonConstant.StatusCode.FAIL.getDesc());
     }
 
     public static void convertPagination(BaseRequest baseRequest) {

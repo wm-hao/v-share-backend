@@ -32,7 +32,8 @@ public class CommonConstant {
 
     public enum StatusCode {
         SUCCESS("SUCCESS", "成功"),
-        FAIL("FAIL", "失败");
+        FAIL("FAIL", "失败"),
+        TOKEN_EXPIRE("TOKEN_EXPIRE", "token过期");
 
         private String code;
         private String desc;
