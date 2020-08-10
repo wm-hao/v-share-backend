@@ -13,11 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import zhh.share.constant.CommonConstant;
 import zhh.share.constant.ShareConstant;
+import zhh.share.dao.BookRepository;
 import zhh.share.dao.TradeRecordRepository;
-import zhh.share.entity.Balance;
-import zhh.share.entity.BalanceChange;
-import zhh.share.entity.TradeRecord;
-import zhh.share.entity.User;
+import zhh.share.entity.*;
 import zhh.share.pojo.TradeProfitCount;
 import zhh.share.pojo.TradeRecordCount;
 import zhh.share.service.*;
@@ -31,6 +29,7 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ShareApplication.class})
@@ -59,6 +58,12 @@ public class ShareApplicationTests {
 
     @Autowired
     TradeRecordRepository tradeRecordRepository;
+
+    @Autowired
+    BookService bookService;
+
+    @Autowired
+    BookRepository bookRepository;
 
     @Test
     public void testQryTradeRecord() throws Exception {
@@ -252,6 +257,26 @@ public class ShareApplicationTests {
     public void testCalculateSomeProfit() throws Exception {
         profitService.calculateProfit(1l, "159915");
         profitService.calculateProfit(1L, "111");
+    }
+
+    @Test
+    public void testBooks() throws Exception {
+        Book book = new Book();
+        book.setUserId(1164L);
+        book.setName("止损");
+        book.setProgress(2);
+        book.setTotalPages(253);
+        bookService.addNewBook(book);
+    }
+
+    @Test
+    public void testQryBooks() throws Exception {
+        log.error(bookRepository.existsById(2L));
+        log.error(bookRepository.existsById(4016L));
+        Optional<Book> optionalBook = bookRepository.findById(4016L);
+        Book book = optionalBook.get();
+        book.setTotalPages(3000);
+        bookService.update(book);
     }
 
 }
