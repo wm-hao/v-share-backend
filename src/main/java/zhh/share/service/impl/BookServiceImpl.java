@@ -41,6 +41,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book addNewBook(Book book) throws Exception {
         CommonUtil.fillDefaultProps(book);
+        book.setReadCounts(0);
         return bookRepository.save(book);
     }
 }

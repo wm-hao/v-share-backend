@@ -27,4 +27,6 @@ public class Book extends BaseEntity {
     private Integer progress;
     @Column(columnDefinition = "int(10) comment '总页数'", nullable = false)
     private Integer totalPages;
+    @Column(columnDefinition = "int(10) comment '阅读次数'", nullable = false)
+    private Integer readCounts;
 }
