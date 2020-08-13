@@ -23,10 +23,7 @@ import zhh.share.util.ExcelUtil;
 import zhh.share.util.TimeUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author richer
@@ -84,13 +81,15 @@ public class TradeController {
         try {
             file.transferTo(dest);
             List<TradeRecord> tradeRecords = ExcelUtil.parseExcel2TradeRecord(dest.getAbsolutePath());
+            Set<String> shareCodes = new HashSet<>();
             for (TradeRecord tradeRecord : tradeRecords) {
                 log.error(tradeRecord);
                 tradeRecord.setUserId(userId);
+                shareCodes.add(tradeRecord.getShareCode());
             }
             tradeRecordService.saveAll(tradeRecords);
-            for (TradeRecord tradeRecord : tradeRecords) {
-                profitService.calculateProfit(userId, tradeRecord.getShareCode());
+            for (String shareCode : shareCodes) {
+                profitService.calculateProfit(userId, shareCode);
             }
             log.info("上传成功");
         } catch (Exception e) {
