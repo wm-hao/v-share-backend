@@ -98,15 +98,18 @@ public class ProfitServiceImpl implements ProfitService {
             profit = profits.get(0);
             profit.setUpdateTime(TimeUtil.getCurrentTimestamp());
             profit.setKeepCount(count.getTotal());
-            if (profit.getKeepCount() > 0) {
+            if (count.getTotal() > 0) {
+                profit.setKeepCount(count.getTotal());
                 profit.setKeepAmount(Math.abs(count.getAmount()));
             } else {
+                profit.setKeepCount(0d);
+                profit.setKeepAmount(0d);
                 profit.setProfit(count.getAmount());
             }
         } else {
             profit = createNewProfit(count, userId);
         }
-        profitRepository.save(profit);
+        profitRepository.saveAndFlush(profit);
     }
 
     private Profit createNewProfit(TradeProfitCount tradeProfitCount, long userId) throws Exception {
@@ -116,7 +119,9 @@ public class ProfitServiceImpl implements ProfitService {
         profit.setKeepCount(tradeProfitCount.getTotal());
         if (profit.getKeepCount() > 0) {
             profit.setKeepAmount(Math.abs(tradeProfitCount.getAmount()));
+            profit.setProfit(0d);
         } else {
+            profit.setKeepAmount(0d);
             profit.setProfit(tradeProfitCount.getAmount());
         }
         profit.setShareName(tradeProfitCount.getShareName());
