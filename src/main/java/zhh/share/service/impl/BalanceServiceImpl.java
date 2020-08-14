@@ -16,6 +16,7 @@ import zhh.share.service.BalanceService;
 import zhh.share.util.TimeUtil;
 
 import javax.persistence.criteria.Predicate;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -60,5 +61,10 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public List<BalanceCount> qryProfitGroupByDate(long userId) {
         return balanceRepository.qryProfitGroupByDate(userId);
+    }
+
+    @Override
+    public List<Balance> findByUserIdAndStateAndCreateTimeAfter(long userId, Timestamp createTime) throws Exception {
+        return balanceRepository.findByUserIdAndStateAndCreateTimeAfter(userId, CommonConstant.State.STATE_VALID, createTime);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import zhh.share.entity.Balance;
 import zhh.share.pojo.BalanceCount;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> , JpaSpe
 
     @Query(value = "select sum(profit) as profit, date from king.balance where user_id = :userId and state = 1 group by date ", nativeQuery = true)
     List<BalanceCount> qryProfitGroupByDate(@Param(value = "userId") long userId);
+
+    List<Balance> findByUserIdAndStateAndCreateTimeAfter(long userId, int state, Timestamp createTime);
 }

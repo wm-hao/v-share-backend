@@ -142,4 +142,16 @@ public class BalanceController {
         }
         return counts;
     }
+
+    @GetMapping("/profitSumAfterSomeDay")
+    public BaseResponse profitSumAfterSomeDay(@RequestParam long userId) throws Exception {
+        BaseResponse baseResponse = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        List<Balance> balances = balanceService.findByUserIdAndStateAndCreateTimeAfter(userId, TimeUtil.getTimestampFromString("2020081300:00:01", TimeUtil.TimeFormat.YYYYMMDDHI_MM_SS));
+        long amount = 0L;
+        for (Balance balance : balances) {
+            amount += balance.getProfit();
+        }
+        baseResponse.setData(String.valueOf(amount));
+        return baseResponse;
+    }
 }

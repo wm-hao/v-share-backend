@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import zhh.share.entity.Balance;
 import zhh.share.pojo.BalanceCount;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public interface BalanceService {
     Balance findCurrentDayBalance(Long userId) throws Exception;
 
     List<BalanceCount> qryProfitGroupByDate(long userId);
+
+    List<Balance> findByUserIdAndStateAndCreateTimeAfter(long userId, Timestamp createTime) throws Exception;
 }
