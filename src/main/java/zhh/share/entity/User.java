@@ -44,19 +44,19 @@ public class User {
     @Column(columnDefinition = "varchar(32) comment '手机号'", nullable = false)
     private String billId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '生效日期'", nullable = false)
     private Date validDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '创建日期'", nullable = false)
     private Date createDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '操作日期'", nullable = false)
     private Date optDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '过期日期'", nullable = false)
     private Date expireDate;
 

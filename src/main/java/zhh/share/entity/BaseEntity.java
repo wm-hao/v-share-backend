@@ -18,11 +18,11 @@ public class BaseEntity {
     @Column(columnDefinition = "bigint comment '主键'", nullable = false)
     private Long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '创建时间' ")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '更新时间' ")
     private Date updateTime;
 

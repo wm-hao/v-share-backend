@@ -57,7 +57,7 @@ public class TradeRecord extends BaseEntity implements Serializable {
     @Column(columnDefinition = "double comment '手续费'", nullable = false)
     private Double fee;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(columnDefinition = "datetime comment '交易时间'")
     private Date payTime;
 
