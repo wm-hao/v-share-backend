@@ -35,7 +35,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
             predicate.getExpressions().add(criteriaBuilder.equal(root.get(Balance.USER_ID), userId));
             predicate.getExpressions().add(criteriaBuilder.equal(root.get(Balance.STATE), CommonConstant.State.STATE_VALID));
             return predicate;
-        }, PageRequest.of(page, size, asc ? Sort.Direction.ASC : Sort.Direction.DESC, BaseEntity.DATE));
+        }, PageRequest.of(page, size, asc ? Sort.Direction.ASC : Sort.Direction.DESC, BaseEntity.ID));
     }
 
     @Override
