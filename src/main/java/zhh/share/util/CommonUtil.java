@@ -29,7 +29,7 @@ public class CommonUtil {
         return new BaseResponse(CommonConstant.StatusCode.SUCCESS.getCode(), message, CommonConstant.StatusCode.SUCCESS.getDesc());
     }
 
-    public static BaseResponse success(String message, List<Object> rows) {
+    public static BaseResponse success(String message, List rows) {
         BaseResponse response = new BaseResponse(CommonConstant.StatusCode.SUCCESS.getCode(), message, CommonConstant.StatusCode.SUCCESS.getDesc());
         response.setRows(rows);
         response.setTotal(rows.size());

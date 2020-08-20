@@ -12,6 +12,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import zhh.share.interceptor.HeaderInterceptor;
 import zhh.share.interceptor.TokenInterceptor;
 
 /**
@@ -29,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/index*", "/static/**", "/user/**", "/error*", "/css/**", "/js/**", "/fonts/**", "/img/**", "/*.ico").addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/chance/export", "/index*", "/static/**", "/user/**", "/error*", "/css/**", "/js/**", "/fonts/**", "/img/**", "/*.ico").addPathPatterns("/**");
     }
 
     @Override
