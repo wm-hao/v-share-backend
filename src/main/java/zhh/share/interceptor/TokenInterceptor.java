@@ -48,7 +48,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
         Object object = redisUtil.get(userName);
         if (object == null) {
-            response.getWriter().println(JSON.toJSONString(CommonUtil.fail( "token已过期，请重新登录", CommonConstant.StatusCode.TOKEN_EXPIRE.getCode())));
+            response.getWriter().println(JSON.toJSONString(CommonUtil.fail( "登录已过期，请重新登录", CommonConstant.StatusCode.TOKEN_EXPIRE.getCode())));
             return false;
         }
         if (!StringUtils.equals(token, object.toString())) {
