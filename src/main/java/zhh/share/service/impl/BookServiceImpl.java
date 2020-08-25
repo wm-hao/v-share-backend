@@ -32,6 +32,7 @@ public class BookServiceImpl implements BookService {
     public Book update(Book book) throws Exception {
         if (bookRepository.existsById(book.getId())) {
             book.setUpdateTime(TimeUtil.getCurrentTimestamp());
+            transferBook(book);
             return bookRepository.save(book);
         } else {
             throw new Exception("书籍信息不存在");
@@ -42,6 +43,17 @@ public class BookServiceImpl implements BookService {
     public Book addNewBook(Book book) throws Exception {
         CommonUtil.fillDefaultProps(book);
         book.setReadCounts(0);
+        transferBook(book);
         return bookRepository.save(book);
+    }
+
+    private void transferBook(Book book) {
+        if (book != null) {
+            if (book.getProgress() == 99) {
+                book.setProgress(100);
+                int readCounts = book.getReadCounts() == null ? 0 : book.getReadCounts();
+                book.setReadCounts(readCounts + 1);
+            }
+        }
     }
 }
