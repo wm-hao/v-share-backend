@@ -1,5 +1,6 @@
 package zhh.share.service;
 
+import org.springframework.data.domain.Page;
 import zhh.share.entity.Book;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BookService {
     Book update(Book book) throws Exception;
 
     Book addNewBook(Book book) throws Exception;
+
+    Page<Book> findByUserIdPagination(long userId, int page, int size) throws Exception;
 }

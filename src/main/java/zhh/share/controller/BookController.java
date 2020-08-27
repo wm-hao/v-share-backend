@@ -1,8 +1,10 @@
 package zhh.share.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import zhh.share.constant.CommonConstant;
+import zhh.share.dto.BaseRequest;
 import zhh.share.dto.BaseResponse;
 import zhh.share.entity.Book;
 import zhh.share.service.BookService;
@@ -39,5 +41,14 @@ public class BookController {
     public BaseResponse update(@RequestBody Book book) throws Exception {
         bookService.update(book);
         return CommonUtil.success(CommonConstant.Message.UPDATE_SUCCESS);
+    }
+
+    @GetMapping("/pagination")
+    public BaseResponse pagination(@RequestParam long userId, @RequestParam int page, @RequestParam int size) throws Exception {
+        Page<Book> bookPage = bookService.findByUserIdPagination(userId, page, size);
+        BaseResponse response = CommonUtil.success(CommonConstant.Message.QRY_SUCCESS);
+        response.setRows(bookPage.getContent());
+        response.setTotal(bookPage.getTotalElements());
+        return response;
     }
 }

@@ -1,15 +1,22 @@
 package zhh.share.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zhh.share.constant.CommonConstant;
 import zhh.share.dao.BookRepository;
+import zhh.share.entity.Balance;
+import zhh.share.entity.BaseEntity;
 import zhh.share.entity.Book;
 import zhh.share.service.BookService;
 import zhh.share.util.CommonUtil;
 import zhh.share.util.TimeUtil;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
@@ -45,6 +52,16 @@ public class BookServiceImpl implements BookService {
         book.setReadCounts(0);
         transferBook(book);
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Page<Book> findByUserIdPagination(long userId, int page, int size) throws Exception {
+        return bookRepository.findAll((Specification<Book>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            predicate.getExpressions().add(criteriaBuilder.equal(root.get(Balance.USER_ID), userId));
+            predicate.getExpressions().add(criteriaBuilder.equal(root.get(BaseEntity.STATE), CommonConstant.State.STATE_VALID));
+            return predicate;
+        }, PageRequest.of(page, size, Sort.Direction.DESC, BaseEntity.CREATE_TIME));
     }
 
     private void transferBook(Book book) {
