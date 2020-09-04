@@ -36,7 +36,7 @@ public class JournalServiceImpl implements JournalService {
             }
             predicate.getExpressions().add(criteriaBuilder.equal(root.get(TradeRecord.STATE), CommonConstant.State.STATE_VALID));
             return predicate;
-        }, PageRequest.of(page, size, Sort.Direction.DESC, Journal.DATE));
+        }, PageRequest.of(page, size, Sort.Direction.DESC, Journal.CREATE_TIME));
     }
 
     @Override
